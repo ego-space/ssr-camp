@@ -8,11 +8,11 @@ module.exports = {
   entry: path.resolve(__dirname, './server/index.js'),
   externals: [nodeExternals()],
   output: {
-    file: 'bundle.js',
+    filename: 'bundle.js',
     path: path.resolve(__dirname, 'build')
   },
   module: {
-    rule: [
+    rules: [
       { 
         test: /\.js$/,
         // 支持import，支持jsx
