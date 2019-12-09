@@ -1,7 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 function App() {
-  return <h1>Hello Word！</h1>
+  const [ count, setCount ] = useState(1)
+  return <div>
+    <h1>Hello Word！{count}</h1>
+    <button onClick={() => setCount(count + 1)}>累加</button>
+  </div>
+  
 }
 
-export default App
+export default <App></App>

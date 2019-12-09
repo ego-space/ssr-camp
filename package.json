@@ -4,6 +4,7 @@
   "description": "react+koa->ssr",
   "main": "index.js",
   "scripts": {
+    "dev:client": "webpack --config webpack.client.js --watch",
     "dev:server": "webpack --config webpack.server.js --watch",
     "dev:start": "nodemon --watch build --exec node \"./build/bundle.js\""
   },
@@ -21,6 +22,7 @@
   "dependencies": {
     "babel-loader": "^8.0.6",
     "koa": "^2.11.0",
+    "koa-static": "^5.0.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
   }
