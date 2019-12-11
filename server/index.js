@@ -5,6 +5,9 @@ import { StaticRouter } from 'react-router-dom'
 import Koa from 'koa'
 import serve from 'koa-static'
 import App from '../src/App'
+import { Provider } from 'react-redux'
+import store from '../src/store/store'
+
 
 const app = new Koa()
 
@@ -13,9 +16,11 @@ app.use(serve(path.join(process.cwd() + "/public")))
 app.use(ctx => {
   
   const content = renderToString(
-    <StaticRouter location={ctx.path}>
-      {App}
-    </StaticRouter>
+    <Provider store={store}>
+      <StaticRouter location={ctx.path}>
+        {App}
+      </StaticRouter>
+    </Provider>
   )
 
   ctx.body = `
