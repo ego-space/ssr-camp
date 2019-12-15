@@ -1,24 +1,39 @@
 import path from 'path'
 import React from 'react'
 import { renderToString } from 'react-dom/server'
-import { StaticRouter } from 'react-router-dom'
+import { StaticRouter, matchPath, Route } from 'react-router-dom'
 import Koa from 'koa'
 import serve from 'koa-static'
-import App from '../src/App'
+import routes from '../src/App'
 import { Provider } from 'react-redux'
-import store from '../src/store/store'
+import { getServerStore } from '../src/store/store'
 
-
+// 初始化store
+const store = getServerStore()
 const app = new Koa()
 
 app.use(serve(path.join(process.cwd() + "/public")))
 
-app.use(ctx => {
+app.use(async ctx => {
+  const promises = []
+
+  routes.some(route => {
+    const match = matchPath(ctx.path, route)
+    if(match) {
+      const { loadData } = route.component
+      if (loadData) {
+        promises.push(loadData(store))
+      }
+    }
+  })
+
+  // 等待所有网络请求
+  await Promise.all(promises)
   
   const content = renderToString(
     <Provider store={store}>
       <StaticRouter location={ctx.path}>
-        {App}
+        { routes.map(route => <Route {...route}></Route>)}
       </StaticRouter>
     </Provider>
   )
@@ -34,11 +49,13 @@ app.use(ctx => {
     </head>
     <body>
       <div id="root">${content}</div>
+      <script>
+        window.__context=${JSON.stringify(store.getState())}
+      </script>
       <script src="/bundle.js"></script>
     </body>
     </html>
   `
-  
 })
 
 function start(port) {

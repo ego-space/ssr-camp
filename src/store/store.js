@@ -8,6 +8,17 @@ const reducer = combineReducers({
 })
 
 // 创建store
-const store = createStore(reducer, applyMiddleware(thunk))
+// const store = createStore(reducer, applyMiddleware(thunk))
 
-export default store
+// export default store
+
+export const getServerStore = () => {
+  return createStore(reducer, applyMiddleware(thunk))
+}
+
+export const getClientStore = () => {
+  // 通过window.__context获取数据
+  // 浏览器
+  const defaultStore = window.__context ? window.__context : {}
+  return createStore(reducer, defaultStore, applyMiddleware(thunk))
+}

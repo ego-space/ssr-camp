@@ -4,9 +4,9 @@ import { getIndexList } from '../store/index'
 
 function Index(props) {
   const [count, setCount] = useState(1)
-  useEffect(() => {
-    props.getIndexList()
-  }, [])
+  // useEffect(() => {
+  //   props.getIndexList()
+  // }, [])
   return <div>
     <h1>首页</h1>
     <div>{count}</div>
@@ -20,7 +20,10 @@ function Index(props) {
     </ul>
   </div>
 }
-
+// 注入方法
+Index.loadData = (store) => {
+  return store.dispatch(getIndexList())
+}
 export default connect(
   state => ({list: state.index.list}),
   {getIndexList}
