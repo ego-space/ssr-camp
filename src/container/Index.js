@@ -4,9 +4,12 @@ import { getIndexList } from '../store/index'
 
 function Index(props) {
   const [count, setCount] = useState(1)
-  // useEffect(() => {
-  //   props.getIndexList()
-  // }, [])
+  useEffect(() => {
+    if (!props.list.length) {
+      // 判断数据是否存在
+      props.getIndexList()
+    }
+  }, [])
   return <div>
     <h1>首页</h1>
     <div>{count}</div>

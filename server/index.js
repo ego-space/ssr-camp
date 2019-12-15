@@ -7,6 +7,7 @@ import serve from 'koa-static'
 import routes from '../src/App'
 import { Provider } from 'react-redux'
 import { getServerStore } from '../src/store/store'
+import Header from '../src/components/Header'
 
 // 初始化store
 const store = getServerStore()
@@ -33,6 +34,7 @@ app.use(async ctx => {
   const content = renderToString(
     <Provider store={store}>
       <StaticRouter location={ctx.path}>
+        <Header />
         { routes.map(route => <Route {...route}></Route>)}
       </StaticRouter>
     </Provider>
