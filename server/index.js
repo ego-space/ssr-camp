@@ -28,8 +28,12 @@ app.use(async ctx => {
     }
   })
 
-  // 等待所有网络请求
-  await Promise.all(promises)
+  try {
+    // 等待所有网络请求
+    await Promise.all(promises)
+  } catch (error) {
+    console.log(error)
+  }
   
   const content = renderToString(
     <Provider store={store}>
@@ -65,4 +69,4 @@ function start(port) {
     console.log(`start: listen on port:${port}`)
   })
 }
-start(8080)
+start(9090)
