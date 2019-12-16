@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Route } from 'react-router-dom'
 import Index from './container/Index';
 import About from './container/About';
+import User from './container/user';
 
 // export default (
 //   <div>
@@ -15,7 +16,7 @@ export default [
   {
     path: '/',
     component: Index,
-    exact: true,
+    // exact: true,
     key: 'index'
   },
   {
@@ -23,5 +24,11 @@ export default [
     component: About,
     exact: true,
     key: 'about'
+  },
+  {
+    path: '/user',
+    component: User,
+    exact: true,
+    key: 'user'
   }
 ]
