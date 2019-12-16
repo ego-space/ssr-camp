@@ -8,6 +8,8 @@ import routes from '../src/App'
 import { Provider } from 'react-redux'
 import { getServerStore } from '../src/store/store'
 import Header from '../src/components/Header'
+import Axios from 'axios'
+import { clientPort } from '../config'
 
 // 初始化store
 const store = getServerStore()
@@ -16,6 +18,17 @@ const app = new Koa()
 app.use(serve(path.join(process.cwd() + "/public")))
 
 app.use(async ctx => {
+
+  // 处理接口转发
+  if(/^\/api/.test(ctx.path)) {
+    const {method, path} = ctx
+    const {data} = await Axios({
+      method,
+      url: `http://localhost:8888${path}`
+    })
+    return ctx.body = data
+  }
+
   const promises = []
 
   routes.some(route => {
@@ -69,4 +82,4 @@ function start(port) {
     console.log(`start: listen on port:${port}`)
   })
 }
-start(9090)
+start(clientPort)

@@ -1,4 +1,4 @@
-import axios from 'axios'
+import http from '../http'
 // 首页逻辑
 
 // actionType
@@ -10,9 +10,10 @@ const changeUserInfo = data => ({
   data
 })
 
+
 export const getUserInfo = server => {
   return (dispatch, getState, axiosInstance) => {
-    return axios.get('http://localhost:8888/api/user/list').then(res => {
+    return http.get('/api/user/list').then(res => {
       const { data } = res.data
       dispatch(changeUserInfo(data))
     })

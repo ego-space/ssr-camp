@@ -1,6 +1,7 @@
 // 模拟接口
 const Koa = require('koa')
 const app = new Koa()
+const { mockPort } = require('./config')
 
 const start = (port) => {
   app.listen(port, () => {
@@ -8,7 +9,7 @@ const start = (port) => {
   })
 }
 
-start(8888)
+start(mockPort)
 
 // logger
 app.use(async (ctx, next) => {
