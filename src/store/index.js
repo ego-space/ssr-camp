@@ -1,4 +1,3 @@
-import http from '../http'
 // 首页逻辑
 
 // actionType
@@ -11,8 +10,8 @@ const changeList = list => ({
 })
 
 export const getIndexList = server => {
-  return (dispatch, getState, axiosInstance) => {
-    return http.get('/api/course/list').then(res => {
+  return (dispatch, getState, $axios) => {
+    return $axios.get('/api/course/list').then(res => {
       const { list } = res.data
       dispatch(changeList(list))
     })
