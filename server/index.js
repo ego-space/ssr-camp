@@ -1,7 +1,7 @@
 import path from 'path'
 import React from 'react'
 import { renderToString } from 'react-dom/server'
-import { StaticRouter, matchPath, Route } from 'react-router-dom'
+import { StaticRouter, matchPath, Route, Switch } from 'react-router-dom'
 import Koa from 'koa'
 import serve from 'koa-static'
 import routes from '../src/App'
@@ -51,14 +51,25 @@ app.use(async ctx => {
     console.log(error)
   }
   
+  const context = {}
   const content = renderToString(
     <Provider store={store}>
-      <StaticRouter location={ctx.path}>
+      <StaticRouter location={ctx.path} context={context}>
         <Header />
-        { routes.map(route => <Route {...route}></Route>)}
+        <Switch>
+          { routes.map(route => <Route {...route}></Route>)}
+        </Switch>
       </StaticRouter>
     </Provider>
   )
+  // console.log(context)
+  if (context.statusCode) {
+    ctx.status = context.statusCode
+  }
+  if (context.action === 'REPLACE') {
+    // 重定向 回选正确状态码
+    ctx.redirect(context.url, '301')
+  }
 
   ctx.body = `
     <!DOCTYPE html>
