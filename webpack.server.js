@@ -36,6 +36,13 @@ module.exports = {
             '@babel/plugin-transform-runtime'
           ]
         }
+      },
+      {
+        test: /\.css$/,
+        use: [
+          'isomorphic-style-loader',
+          'css-loader'
+        ]
       }
     ]
   }
