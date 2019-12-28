@@ -12,7 +12,9 @@ import { getServerStore } from '../src/store/store'
 import Header from '../src/components/Header'
 import { clientPort } from '../config'
 import proxy from 'koa2-proxy-middleware'
+import config from './config'
 const router = Router()
+
 
 // 初始化store
 const store = getServerStore()
@@ -42,7 +44,7 @@ function csrRender(ctx) {
 
 router.get('*', async ctx => {
 
-  if(ctx.query._mode==='csr') {
+  if (ctx.query._mode === 'csr' || config.csr) {
     return csrRender(ctx)
   }
 
