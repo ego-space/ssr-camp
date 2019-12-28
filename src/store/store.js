@@ -12,11 +12,11 @@ const reducer = combineReducers({
 
 // 创建服务端axios
 const serverAxios = axios.create({
-  baseURL: 'http://localhost:8888/'
+  baseURL: '/'
 })
 // 创建客户端axios
 const clientAxios = axios.create({
-  baseURL: '/'
+  baseURL: 'http://localhost:8888/'
 })
 
 // 创建store
