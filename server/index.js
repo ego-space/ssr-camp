@@ -4,6 +4,7 @@ import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { StaticRouter, matchPath, Route, Switch } from 'react-router-dom'
 import Koa from 'koa'
+import Router from 'koa-router'
 import serve from 'koa-static'
 import routes from '../src/App'
 import { Provider } from 'react-redux'
@@ -11,6 +12,7 @@ import { getServerStore } from '../src/store/store'
 import Header from '../src/components/Header'
 import { clientPort } from '../config'
 import proxy from 'koa2-proxy-middleware'
+const router = Router()
 
 // 初始化store
 const store = getServerStore()
@@ -20,11 +22,12 @@ app.use(serve(path.join(process.cwd() + "/public")))
 
 // 接口转发代理配置
 const options = {
-  target: {
-    '/api': {
+  targets: {
+    // 匹配
+    '/api/(.*)': {
       target: 'http://localhost:8888',
-      changeOrigin: true
-    }
+      changeOrigin: true,
+    },
   },
 }
 
@@ -37,7 +40,7 @@ function csrRender(ctx) {
   return ctx.body = html
 }
 
-app.use(async ctx => {
+router.get('*', async ctx => {
 
   if(ctx.query._mode==='csr') {
     return csrRender(ctx)
@@ -108,6 +111,10 @@ app.use(async ctx => {
     </html>
   `
 })
+
+app.use(router.routes())
+
+app.use(router.allowedMethods())
 
 function start(port) {
   app.listen(port, () => {
