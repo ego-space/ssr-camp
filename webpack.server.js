@@ -41,7 +41,12 @@ module.exports = {
         test: /\.css$/,
         use: [
           'isomorphic-style-loader',
-          'css-loader'
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+            }
+          }
         ]
       }
     ]

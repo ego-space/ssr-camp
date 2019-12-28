@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { getIndexList } from '../store/index'
+import styles from './Index.css'
 
 function Index(props) {
+  if (props.staticContext) {
+    props.staticContext.css.push(styles._getCss())
+  }
   const [count, setCount] = useState(1)
   useEffect(() => {
     if (!props.list.length) {
@@ -11,7 +15,7 @@ function Index(props) {
     }
   }, [])
   return <div>
-    <h1>首页</h1>
+    <h1 className={styles.title}>首页</h1>
     <div>{count}</div>
     <button onClick={() => setCount(count + 1)}>累加</button>
     <ul>

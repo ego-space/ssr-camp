@@ -59,10 +59,12 @@ app.use(async ctx => {
     // 等待所有网络请求
     await Promise.all(promises)
   } catch (error) {
-    console.log(error)
+    // console.log(error)
   }
   
-  const context = {}
+  const context = {
+    css: []
+  }
   const content = renderToString(
     <Provider store={store}>
       <StaticRouter location={ctx.path} context={context}>
@@ -82,6 +84,8 @@ app.use(async ctx => {
     ctx.redirect(context.url, '301')
   }
 
+  const css = context.css.join('\n')
+
   ctx.body = `
     <!DOCTYPE html>
     <html lang="en">
@@ -90,6 +94,9 @@ app.use(async ctx => {
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
       <title>react+koa->ssr</title>
+      <style>
+        ${css}
+      </style>
     </head>
     <body>
       <div id="root">${content}</div>
