@@ -1,4 +1,5 @@
 import path from 'path'
+import fs from 'fs'
 import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { StaticRouter, matchPath, Route, Switch } from 'react-router-dom'
@@ -30,7 +31,17 @@ const options = {
 // 注册接口代理
 app.use(proxy(options))
 
+function csrRender(ctx) {
+  const filename = path.resolve(process.cwd(), 'public/index.csr.html')
+  const html = fs.readFileSync(filename, 'utf-8')
+  return ctx.body = html
+}
+
 app.use(async ctx => {
+
+  if(ctx.query._mode==='csr') {
+    return csrRender(ctx)
+  }
 
   const promises = []
 

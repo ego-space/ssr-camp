@@ -15,4 +15,10 @@ const Page = (<Provider store={getClientStore()}>
   </BrowserRouter>
 </Provider>)
 // 注水 客户端入口
-ReactDom.hydrate(Page, document.getElementById('root'))
+if(window.__context) {
+  // ssr
+  ReactDom.hydrate(Page, document.getElementById('root'))
+} else {
+  // csr
+  ReactDom.render(Page, document.getElementById('root'))
+}
