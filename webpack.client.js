@@ -1,4 +1,5 @@
 const path = require('path')
+const HtmlWebpackPlguin = require('html-webpack-plugin')
 
 // 服务端webpack
 module.exports = {
@@ -34,5 +35,12 @@ module.exports = {
         ]
       }
     ]
-  }
+  },
+  plugins: [
+    new HtmlWebpackPlguin({
+      filename: 'index.csr.html',
+      template: 'src/index.csr.html',
+      inject: true
+    })
+  ]
 }
