@@ -12,7 +12,7 @@ function Index(props) {
       props.getIndexList()
     }
   }, [])
-  return <div>
+  return <div className={styles.container}>
     <h1 className={styles.title}>首页</h1>
     <div>{count}</div>
     <button onClick={() => setCount(count + 1)}>累加</button>
@@ -25,11 +25,25 @@ function Index(props) {
     </ul>
   </div>
 }
-// 注入方法
+
+// let NewIndex = connect(
+//   state => ({ list: state.index.list }),
+//   { getIndexList }
+// )(withStyle(Index, styles))
+
+// // 注入方法
+// NewIndex.loadData = (store) => {
+//   return store.dispatch(getIndexList())
+// }
+
 Index.loadData = (store) => {
   return store.dispatch(getIndexList())
 }
-export default connect(
-  state => ({list: state.index.list}),
-  {getIndexList}
-)(withStyle(Index,styles))
+
+Index = connect(
+  state => ({ list: state.index.list }),
+  { getIndexList }
+)(withStyle(Index, styles))
+
+
+export default Index
